@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Issues Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: "#4f46e5",
+            brandDark: "#4338ca",
+            page: "#f6f8fa",
+            cardGreen: "#34d399",
+            cardPurple: "#a855f7"
+          },
+          boxShadow: {
+            soft: "0 1px 2px rgba(16,24,40,0.06), 0 1px 3px rgba(16,24,40,0.1)"
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-page text-slate-900">
+  <main>
+    <section id="loginPage" class="min-h-screen flex items-center justify-center px-4 py-10">
+      <div class="w-full max-w-[360px] rounded-2xl border border-slate-200 bg-white px-7 py-8 shadow-soft">
+        <div class="text-center">
+          <img src="./assets/github-logo.png" alt="GitHub logo" class="mx-auto h-16 w-16 object-contain" />
+          <h1 class="mt-4 text-[22px] font-semibold tracking-tight">GitHub Issues Tracker</h1>
+          <p class="mt-1 text-sm text-slate-500">Sign in to manage your issues</p>
+        </div>
+
+        <form id="loginForm" class="mt-8 space-y-4">
+          <div>
+            <label for="username" class="mb-1.5 block text-sm font-medium text-slate-700">Username</label>
+            <input id="username" type="text" placeholder="Enter Username" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-brand focus:ring-4 focus:ring-indigo-100" />
+            <p class="mt-1.5 text-xs text-brand">Default: admin</p>
+          </div>
+
+          <div>
+            <label for="password" class="mb-1.5 block text-sm font-medium text-slate-700">Password</label>
+            <input id="password" type="password" placeholder="Enter Password" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-brand focus:ring-4 focus:ring-indigo-100" />
+            <p class="mt-1.5 text-xs text-brand">Default: admin123</p>
+          </div>
+
+          <button type="submit" class="w-full rounded-xl bg-brand py-3 text-sm font-semibold text-white transition hover:bg-brandDark">
+            Sign In
+          </button>
+        </form>
+
+        <div class="my-5 flex items-center gap-3">
+          <div class="h-px flex-1 bg-slate-200"></div>
+          <span class="text-xs font-medium text-slate-400">OR</span>
+          <div class="h-px flex-1 bg-slate-200"></div>
+        </div>
+
+        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 text-center">
+          <p class="text-xs text-slate-500">Demo Credentials:</p>
+          <p class="mt-2 text-sm font-medium">Username: admin</p>
+          <p class="text-sm font-medium">Password: admin123</p>
+        </div>
+
+        <p id="loginError" class="mt-4 hidden text-center text-sm font-medium text-red-500"></p>
+      </div>
+    </section>
+
+    <section id="appPage" class="hidden"></section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
