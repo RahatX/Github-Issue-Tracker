@@ -25,6 +25,9 @@ const elements = {
   loadingState: document.getElementById("loadingState"),
   emptyState: document.getElementById("emptyState"),
   issueGrid: document.getElementById("issueGrid"),
+
+  searchForm: document.getElementById("searchForm"),
+  searchInput: document.getElementById("searchInput"),
   tabButtons: document.querySelectorAll(".tab-btn")
 };
 
@@ -35,6 +38,8 @@ function init() {
 
 function bindEvents() {
   elements.loginForm.addEventListener("submit", handleLogin);
+  elements.searchForm.addEventListener("submit", handleSearch);
+  elements.searchInput.addEventListener("input", applyFilters);
 
   elements.tabButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -82,11 +87,23 @@ async function fetchIssues() {
   }
 }
 
+function handleSearch(event) {
+  event.preventDefault();
+  applyFilters();
+}
+
 function applyFilters() {
+  const searchText = elements.searchInput.value.trim().toLowerCase();
   let filtered = [...state.allIssues];
 
   if (state.activeTab !== "all") {
     filtered = filtered.filter((issue) => normalizeStatus(issue.status) === state.activeTab);
+  }
+
+  if (searchText) {
+    filtered = filtered.filter((issue) =>
+      String(issue.title || "").toLowerCase().includes(searchText)
+    );
   }
 
   state.visibleIssues = filtered;
@@ -111,7 +128,7 @@ function updateSectionHeader(count) {
   };
 
   elements.sectionTitle.textContent = titles[state.activeTab];
-  elements.sectionCount.textContent = `${count} issues`;
+  elements.sectionCount.textContent = `${count} issue${count === 1 ? "" : "s"}`;
   elements.issuesHeaderCount.textContent = `${count} Issues`;
 }
 
