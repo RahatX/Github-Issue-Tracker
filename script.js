@@ -4,6 +4,7 @@ const API = {
 
 const state = {
   allIssues: [],
+  visibleIssues: [],
   activeTab: "all"
 };
 
@@ -39,7 +40,7 @@ function bindEvents() {
     button.addEventListener("click", () => {
       state.activeTab = button.dataset.tab;
       updateTabButtons();
-      renderIssues(state.allIssues);
+      applyFilters();
     });
   });
 }
@@ -70,17 +71,27 @@ async function fetchIssues() {
     const result = await response.json();
     state.allIssues = Array.isArray(result?.data) ? result.data : [];
     updateDashboardCounts();
-    updateSectionHeader(state.allIssues.length);
-    renderIssues(state.allIssues);
+    applyFilters();
   } catch (error) {
     console.error(error);
     state.allIssues = [];
     updateDashboardCounts();
-    updateSectionHeader(0);
-    renderIssues([]);
+    applyFilters();
   } finally {
     elements.loadingState.classList.add("hidden");
   }
+}
+
+function applyFilters() {
+  let filtered = [...state.allIssues];
+
+  if (state.activeTab !== "all") {
+    filtered = filtered.filter((issue) => normalizeStatus(issue.status) === state.activeTab);
+  }
+
+  state.visibleIssues = filtered;
+  updateSectionHeader(filtered.length);
+  renderIssues(filtered);
 }
 
 function updateDashboardCounts() {
@@ -93,7 +104,13 @@ function updateDashboardCounts() {
 }
 
 function updateSectionHeader(count) {
-  elements.sectionTitle.textContent = "All Issues";
+  const titles = {
+    all: "All Issues",
+    open: "Open Issues",
+    closed: "Closed Issues"
+  };
+
+  elements.sectionTitle.textContent = titles[state.activeTab];
   elements.sectionCount.textContent = `${count} issues`;
   elements.issuesHeaderCount.textContent = `${count} Issues`;
 }
